@@ -1,7 +1,7 @@
 #!usr/bin/env sh
 [ -n "$WP_LOADED" ] && return
 WP_LOADED=1
-WAYPOINTS_FILE="/home/grishayak/cs/projects/python/LinuxWaypoints/.waypoints"
+WAYPOINTS_FILE="/path/to/.waypoints"
 
 WP_TEMP="$WAYPOINTS_FILE.tmp"
 

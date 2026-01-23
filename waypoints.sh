@@ -5,7 +5,6 @@ WAYPOINTS_FILE="$HOME/.local/share/waypoints/.waypoints"
 WP_TEMP="$WAYPOINTS_FILE.tmp"
 
 wp() {
-    mkdir -p "$(dirname "$WAYPOINTS_FILE")"
     touch "$WAYPOINTS_FILE"
 
     case "$1" in
@@ -16,32 +15,30 @@ wp() {
 
             grep -v "^$name=" "$WAYPOINTS_FILE" > $WP_TEMP
             mv "$WP_TEMP" "$WAYPOINTS_FILE"
-            if [ -f "$WP_TEMP" ]; then
-                rm "$WP_TEMP"
-            fi
 
             printf '%s=%s\n' "$name" "$path" >> "$WAYPOINTS_FILE"
-            printf 'Waypoint \"%s\" added\n' "$name"
             ;;
         rm)
             [ -z "$2" ] && { echo "Usage: wp rm <name>"; return 1; }
             case "$3" in 
-                -e) 
+                -e|--reg|--regex) 
                     regex="$(printf '%s' "$2" | sed 's/\*/.*/g; s/?/./g')"
                     grep -v -E "^$regex=" "$WAYPOINTS_FILE" > "$WP_TEMP"
+
+                    echo Following waypoints will be deleted: 
+                    comm -13 "$WP_TEMP" "$WAYPOINTS_FILE" | cut -d= -f1
+                    echo Type \"Y\" if you are okay with this
+
+                    read ok
                     ;;
                 *) 
                     grep -v "^$2=" "$WAYPOINTS_FILE" > "$WP_TEMP"
+                    ok=Y
             esac    
-            echo Following waypoints will be deleted: 
-            comm -13 "$WP_TEMP" "$WAYPOINTS_FILE" | cut -d= -f1
-            echo Type \"y\" if you are okay with this
-            read ok
-            if [ "$ok" = "y" ]; then
+            if [ "$ok" = "Y" ]; then
                 mv "$WP_TEMP" "$WAYPOINTS_FILE"
-                if [ -f "$WP_TEMP" ]; then
-                    rm "$WP_TEMP"
-                fi
+            else
+                rm "$WP_TEMP"
             fi
             ;;
         ls)

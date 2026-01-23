@@ -1,4 +1,4 @@
-# ~/.local/share/waypoints/.waypoints.sh
+#!usr/bin/env sh
 [ -n "$WP_LOADED" ] && return
 WP_LOADED=1
 WAYPOINTS_FILE="$HOME/.local/share/waypoints/.waypoints"

@@ -1,7 +1,7 @@
 #!usr/bin/env sh
 [ -n "$WP_LOADED" ] && return
 WP_LOADED=1
-WAYPOINTS_FILE="/path/to/.waypoints"
+WAYPOINTS_FILE="/home/grishayak/cs/projects/python/LinuxWaypoints/.waypoints"
 
 WP_TEMP="$WAYPOINTS_FILE.tmp"
 
@@ -21,11 +21,12 @@ TP_USAGE="
 tp <name>                      - teleport to waypoint named <name>"
 
 WP_USAGE="$ADD_USAGE$LS_USAGE$RM_USAGE
+wp <name>                      - same as wp add <name>
 $TP_USAGE"
 
 wp() {
     touch "$WAYPOINTS_FILE"
-
+    [ -z "$1" ] && { echo "$USAGE$WP_USAGE"; return 1; }
     case "$1" in
         add)
             [ -z "$2" ] && { echo "$USAGE$ADD_USAGE"; return 1; }
@@ -63,7 +64,7 @@ wp() {
             cut -d= -f1 "$WAYPOINTS_FILE"
             ;;
         *)
-            echo "$USAGE$WP_USAGE"
+            wp add $1
             ;;
     esac
 }

@@ -1,10 +1,9 @@
 #!/bin/sh
-# Installer for Waypoints
+
 cd $(dirname "$0")
 WAYPOINTS_FILE="$PWD/.waypoints"
 SCRIPT_FILE="$PWD/waypoints.sh"
 
-# Detect shell startup file
 case "$SHELL" in
     */zsh)
         SHELL_RC="$HOME/.zshrc"
@@ -18,9 +17,15 @@ case "$SHELL" in
 esac
 
 touch "$WAYPOINTS_FILE"
-sed --in-place --posix "s|WAYPOINTS_FILE=.*\$|WAYPOINTS_FILE=\"$WAYPOINTS_FILE\"|g" "$SCRIPT_FILE"
+
+if [ "$(uname)" != "Linux" ]; then
+    sed -i '' "s|WAYPOINTS_FILE=.*\$|WAYPOINTS_FILE=\"$WAYPOINTS_FILE\"|g" "$SCRIPT_FILE"
+else
+    sed --in-place --posix "s|WAYPOINTS_FILE=.*\$|WAYPOINTS_FILE=\"$WAYPOINTS_FILE\"|g" "$SCRIPT_FILE"
+fi   
+ 
 grep -qxF ". $SCRIPT_FILE" "$SHELL_RC" || printf "\n. $SCRIPT_FILE\n" >> "$SHELL_RC"
+
 
 echo "Installation complete!"
 echo "Restart your terminal to start using wp and tp."
-

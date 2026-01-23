@@ -33,7 +33,7 @@ case "$1" in
         ;;
 esac
 rm .tmp
-rm -f "$WAYPOINTS_FILE" "$INS_FILE" "$SCRIPT_FILE" "$README_MD"
+rm -f "$WAYPOINTS_FILE"
 
 echo "waypoints have been uninstalled"
 

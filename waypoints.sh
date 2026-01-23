@@ -1,7 +1,7 @@
 #!usr/bin/env sh
 [ -n "$WP_LOADED" ] && return
 WP_LOADED=1
-WAYPOINTS_FILE="$HOME/.local/share/waypoints/.waypoints"
+WAYPOINTS_FILE="$PWD/.waypoints"
 WP_TEMP="$WAYPOINTS_FILE.tmp"
 USAGE='Usage:'
 RM_USAGE='

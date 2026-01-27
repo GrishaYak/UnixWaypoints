@@ -1,33 +1,40 @@
 #!usr/bin/env sh
 [ -n "$WP_LOADED" ] && return
 WP_LOADED=1
-WAYPOINTS_FILE="/home/grishayak/cs/projects/python/LinuxWaypoints/.waypoints"
+WAYPOINTS_FILE="/home/grishayak/cs/projects/shell/UnixWaypoints/.waypoints"
 
 WP_TEMP="$WAYPOINTS_FILE.tmp"
 
 USAGE='Usage:'
 
 RM_USAGE='
-wp rm <name>                   - remove <name> (understands regular expressions)
-wp rm <name> -n|--no-regex     - understand <name> literally'
+wp rm <name>                - remove <name> (understands regular expressions)
+wp rm <name> -n|--no-regex  - understand <name> literally'
 
 ADD_USAGE='
-wp add <name>                  - add <name> to the waypoint list'
+wp add <name>               - add <name> to the waypoint list'
 
 LS_USAGE='
-wp ls                          - print all waypoints'
+wp ls                       - print all waypoints'
 
 TP_USAGE="
-tp <name>                      - teleport to waypoint named <name>"
+tp <name>                   - teleport to waypoint named <name>"
 
 WP_USAGE="$ADD_USAGE$LS_USAGE$RM_USAGE
-wp <name>                      - same as wp add <name>
+wp <name>                   - same as wp add <name>
 $TP_USAGE"
 
+HELP_TEXT='You can type "wp" without arguments instead of using -h or --help flag.
+
+'
 wp() {
     touch "$WAYPOINTS_FILE"
     [ -z "$1" ] && { echo "$USAGE$WP_USAGE"; return 1; }
     case "$1" in
+        -h|--help)
+            echo "$HELP_TEXT$USAGE$WP_USAGE"
+            return 1
+            ;;
         add)
             [ -z "$2" ] && { echo "$USAGE$ADD_USAGE"; return 1; }
             name=$2
@@ -73,6 +80,6 @@ tp() {
     [ -z "$1" ] && { echo "$USAGE$TP_USAGE"; return 1; }
 
     DEST=$(grep "^$1=" "$WAYPOINTS_FILE" | cut -d= -f2-)
-    [ -z "$DEST" ] && { echo "Directory not found: $DEST"; return 1; }
+    [ -z "$DEST" ] && { echo "Directory not found: $1"; return 1; }
     cd "$DEST" || return 1
 }

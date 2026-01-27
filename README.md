@@ -1,4 +1,4 @@
-# Waypoints for Linux terminal
+# Waypoints for Unix terminal
 
 #### This is a program that is used for fast navigation throught folders in terminal.
 
